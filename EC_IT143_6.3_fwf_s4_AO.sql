@@ -1,0 +1,2 @@
+-- Verified solution syntax via Microsoft Docs/Stack Overflow
+-- URL: https://microsoft.com

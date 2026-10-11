@@ -1,0 +1,1 @@
+-- A: I will use string manipulation tools like CHARINDEX and SUBSTRING to find the space delimiter.

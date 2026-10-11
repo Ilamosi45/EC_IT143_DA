@@ -1,0 +1,1 @@
+-- Q: How can I build an independent audit log table to hold historical changes?

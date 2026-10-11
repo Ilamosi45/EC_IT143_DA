@@ -1,0 +1,1 @@
+-- Q: How do I extract the first name and last name from the customer contact name?

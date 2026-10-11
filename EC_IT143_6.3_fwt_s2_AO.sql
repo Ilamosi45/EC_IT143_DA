@@ -1,0 +1,1 @@
+-- A: I will use an AFTER UPDATE trigger that leverages the 'inserted' virtual table.
