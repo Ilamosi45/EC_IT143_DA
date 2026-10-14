@@ -1,0 +1,51 @@
+https://github.com/Ilamosi45/EC_IT143_DA.git
+
+1. -- Q: How do I extract the first name and last name from the customer contact name?
+2. -- A: I will use string manipulation tools like CHARINDEX and SUBSTRING to find the space delimiter.
+
+3. SELECT ContactName,
+       SUBSTRING(ContactName, 1, CHARINDEX(' ', ContactName) - 1) AS FirstName
+FROM dbo.t_w3_schools_customers;
+
+4. -- Verified solution syntax via Microsoft Docs/Stack Overflow
+-- URL: https://microsoft.com
+
+5. -- Scalar Function to Extract First Name
+CREATE FUNCTION dbo.fn_GetFirstName (@ContactName NVARCHAR(100))
+RETURNS NVARCHAR(50)
+AS
+BEGIN
+    RETURN CASE 
+        WHEN CHARINDEX(' ', TRIM(@ContactName)) > 0 
+        THEN SUBSTRING(TRIM(@ContactName), 1, CHARINDEX(' ', TRIM(@ContactName)) - 1)
+        ELSE TRIM(@ContactName)
+    END;
+END;
+GO
+
+-- Scalar Function to Extract Last Name
+CREATE FUNCTION dbo.fn_GetLastName (@ContactName NVARCHAR(100))
+RETURNS NVARCHAR(50)
+AS
+BEGIN
+    RETURN CASE 
+        WHEN CHARINDEX(' ', TRIM(@ContactName)) > 0 
+        THEN SUBSTRING(TRIM(@ContactName), CHARINDEX(' ', TRIM(@ContactName)) + 1, LEN(@ContactName))
+        ELSE ''
+    END;
+END;
+
+6. SELECT ContactName,
+       SUBSTRING(ContactName, 1, CHARINDEX(' ', ContactName) - 1) AS AdHoc_FirstName,
+       dbo.fn_GetFirstName(ContactName) AS UDF_FirstName
+FROM dbo.t_w3_schools_customers;
+
+7. WITH CTE_Compare AS (
+    SELECT SUBSTRING(ContactName, 1, CHARINDEX(' ', ContactName) - 1) AS AdHoc,
+           dbo.fn_GetFirstName(ContactName) AS UDF
+    FROM dbo.t_w3_schools_customers
+    WHERE CHARINDEX(' ', ContactName) > 0
+)
+SELECT * FROM CTE_Compare WHERE AdHoc <> UDF; -- Target: 0 rows returned
+
+8. -- Q: How do I handle contact names that don't have a space or contain middle initials?
